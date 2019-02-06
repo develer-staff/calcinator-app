@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>NewMatch.qml</file>
+    </qresource>
+</RCC>
