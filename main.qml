@@ -3,6 +3,8 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 
+import "./components"
+
 Window {
     visible: true
     width: 640
@@ -23,41 +25,37 @@ Window {
 
     Component {
         id: first
+
         ColumnLayout {
             spacing: 0
-            Rectangle {
+
+            MenuItem {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                color: "red"
-                MouseArea {
-                    anchors.fill: parent
-                    Text {
-                        anchors.centerIn: parent
-                        text: qsTr("Nuova partita")
-                    }
-                    onClicked: {
-                        mainPage.push(newMatchPage)
-                    }
-                }
+                txt: qsTr("Nuova partita")
+                src: "icons/play-button"
+                buttonColor: "red"
+
+                onSelected: mainPage.push(newMatchPage)
             }
-            Rectangle {
+
+            MenuItem {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                color: "blue"
-                Text {
-                    anchors.centerIn: parent
-                    text: qsTr("Stats")
-                }
+                txt: qsTr("Stats")
+                src: "icons/statistics"
+                buttonColor: "yellow"
             }
-            Rectangle {
+
+            MenuItem {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 100
-                Text {
-                    anchors.centerIn: parent
-                    text: qsTr("Nuovo giocatore")
-                }
+                Layout.fillHeight: true
+
+                txt: qsTr("Nuovo giocatore")
+                src: "icons/new-user"
+                buttonColor: "green"
             }
         }
     }
