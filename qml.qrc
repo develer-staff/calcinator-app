@@ -5,7 +5,6 @@
         <file>components/MenuItem.qml</file>
         <file>icons/new-user.svg</file>
         <file>icons/play-button.svg</file>
-        <file>icons/stats.svg</file>
         <file>icons/statistics.svg</file>
     </qresource>
 </RCC>
