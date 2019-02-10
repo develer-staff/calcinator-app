@@ -15,36 +15,23 @@ GridView {
         }
     }
 
+    QtObject {
+        id: props
+        property int borderMargin: 10
+        property int imageMargin: 8
+    }
+
     model: slackPhotos
-    delegate: Rectangle {
-        width: root.cellWidth
-        height: root.cellHeight
-        Image {
-            source: imageUrl
-            sourceSize {
-                width: root.cellWidth
-                height: root.cellHeight
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    var nextTeam = teamId.nextTeam(team)
-                    while (nextTeam !== teamId.none && slackPhotos.getTeamMembers(nextTeam) === 2) {
-                        nextTeam = teamId.nextTeam(nextTeam)
-                    }
+    delegate: Item {
+        width: root.cellWidth - props.imageMargin
+        height: root.cellHeight - props.imageMargin
 
-                    team = nextTeam
-                    return
-                }
-            }
-            Rectangle {
-                anchors {
-                    bottom: parent.bottom
-                    left: parent.left
-                }
-
-                width: 10
-                height: 10
+        Rectangle {
+            anchors.centerIn: parent
+            width: parent.width - 2
+            height: parent.height - 2
+            border {
+                width: props.borderMargin
                 color: {
                     if (team === teamId.none) {
                         return "transparent"
@@ -54,11 +41,32 @@ GridView {
                     return "blue"
                 }
             }
-        }
 
-        Text {
-            text: name
-            anchors.centerIn: parent
+            Image {
+                anchors.centerIn: parent
+                source: imageUrl
+                sourceSize {
+                    width: parent.width - props.borderMargin
+                    height: parent.height - props.borderMargin
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        var nextTeam = teamId.nextTeam(team)
+                        while (nextTeam !== teamId.none && slackPhotos.getTeamMembers(nextTeam) === 2) {
+                            nextTeam = teamId.nextTeam(nextTeam)
+                        }
+
+                        team = nextTeam
+                        return
+                    }
+                }
+            }
+
+            Text {
+                text: name
+                anchors.centerIn: parent
+            }
         }
     }
     cellHeight: width/4
