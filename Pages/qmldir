@@ -1,2 +1,3 @@
 module Pages
+MainPage 1.0 MainPage.qml
 NewMatch 1.0 NewMatch.qml

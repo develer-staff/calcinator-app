@@ -6,7 +6,6 @@ GridView {
     QtObject {
         id: teamId
 
-        //        property list colors: [none, red, blue]
         property int none: 0
         property int red: 1
         property int blue: 2

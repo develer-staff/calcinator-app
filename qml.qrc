@@ -9,5 +9,7 @@
         <file>icons/arrow.png</file>
         <file>Pages/qmldir</file>
         <file>Pages/NewMatch.qml</file>
+        <file>Pages/MainPage.qml</file>
+        <file>Components/Header.qml</file>
     </qresource>
 </RCC>
