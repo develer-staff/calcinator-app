@@ -1,11 +1,13 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>NewMatch.qml</file>
         <file>Components/MenuItem.qml</file>
         <file>Components/qmldir</file>
         <file>icons/new-user.svg</file>
         <file>icons/play-button.svg</file>
         <file>icons/statistics.svg</file>
+        <file>icons/arrow.png</file>
+        <file>Pages/qmldir</file>
+        <file>Pages/NewMatch.qml</file>
     </qresource>
 </RCC>
