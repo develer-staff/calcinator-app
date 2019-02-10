@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.4
 
 GridView {
     id: root
@@ -61,11 +62,17 @@ GridView {
                         return
                     }
                 }
-            }
 
-            Text {
-                text: name
-                anchors.centerIn: parent
+                BusyIndicator {
+                    anchors.centerIn: parent
+                    running: parent.status === Image.Loading
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    text: name
+                    visible: parent.status === Image.Ready
+                }
             }
         }
     }
