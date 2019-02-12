@@ -15,6 +15,7 @@ ApplicationWindow {
     header: Header {
         backButtonVisible: mainStackView.depth > 1
         onBackButtonPressed: mainStackView.pop()
+        title: mainStackView.currentItem.title
     }
 
     StackView {
@@ -22,10 +23,6 @@ ApplicationWindow {
 
         anchors.fill: parent
         initialItem: mainPage
-
-        onCurrentItemChanged: {
-            header.title = currentItem.title
-        }
     }
 
     Component {
