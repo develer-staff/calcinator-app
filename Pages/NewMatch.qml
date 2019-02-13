@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 
+import Components 1.0
+
 GridView {
     id: root
 
@@ -22,62 +24,31 @@ GridView {
         property int imageMargin: 8
     }
 
-    model: slackPhotos
-    delegate: Item {
-        width: root.cellWidth - props.imageMargin
-        height: root.cellHeight - props.imageMargin
-
-        Rectangle {
-            anchors.centerIn: parent
-            width: parent.width - 2
-            height: parent.height - 2
-            border {
-                width: props.borderMargin
-                color: {
-                    if (team === teamId.none) {
-                        return "transparent"
-                    } else if (team === teamId.red) {
-                        return "red"
-                    }
-                    return "blue"
-                }
-            }
-
-            Image {
-                anchors.centerIn: parent
-                source: imageUrl
-                sourceSize {
-                    width: parent.width - props.borderMargin
-                    height: parent.height - props.borderMargin
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        var nextTeam = teamId.nextTeam(team)
-                        while (nextTeam !== teamId.none && slackPhotos.getTeamMembers(nextTeam) === 2) {
-                            nextTeam = teamId.nextTeam(nextTeam)
-                        }
-
-                        team = nextTeam
-                        return
-                    }
-                }
-
-                BusyIndicator {
-                    anchors.centerIn: parent
-                    running: parent.status === Image.Loading
-                }
-
-                Text {
-                    anchors.centerIn: parent
-                    text: name
-                    visible: parent.status === Image.Ready
-                }
-            }
-        }
-    }
     cellHeight: width/4
     cellWidth: width/4
+
+    model: slackPhotos
+    delegate: PlayerSelectionButton {
+        width: root.cellWidth - props.imageMargin
+        height: root.cellHeight - props.imageMargin
+        playerColor: {
+            if (team === teamId.none) {
+                return "transparent"
+            } else if (team === teamId.red) {
+                return "red"
+            }
+            return "blue"
+        }
+
+        onChangeTeam: {
+            var nextTeam = teamId.nextTeam(team)
+            while (nextTeam !== teamId.none && slackPhotos.getTeamMembers(nextTeam) === 2) {
+                nextTeam = teamId.nextTeam(nextTeam)
+            }
+
+            team = nextTeam
+        }
+    }
 
     ListModel {
         id: slackPhotos

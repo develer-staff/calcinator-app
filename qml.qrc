@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Components/MenuItem.qml</file>
+        <file>Components/PlayerSelectionButton.qml</file>
         <file>Components/qmldir</file>
         <file>icons/new-user.svg</file>
         <file>icons/play-button.svg</file>
