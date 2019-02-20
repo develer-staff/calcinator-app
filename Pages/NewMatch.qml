@@ -3,6 +3,8 @@ import QtQuick.Controls 2.4
 
 import Components 1.0
 
+import players 1.0
+
 GridView {
     id: root
 
@@ -27,7 +29,9 @@ GridView {
     cellHeight: width/4
     cellWidth: width/4
 
-    model: slackPhotos
+    model: PlayersModel {
+    }
+
     delegate: PlayerSelectionButton {
         width: root.cellWidth - props.imageMargin
         height: root.cellHeight - props.imageMargin

@@ -20,7 +20,7 @@ Item {
 
         Image {
             anchors.centerIn: parent
-            source: imageUrl
+            source: picture
             sourceSize {
                 width: parent.width - props.borderMargin
                 height: parent.height - props.borderMargin
