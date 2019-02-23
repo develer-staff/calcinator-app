@@ -8,22 +8,24 @@ Item {
 
     property string playerName
     property color playerColor
+    property url playerImage
+    property int playerImageBorderWidth
 
     Rectangle {
         anchors.centerIn: parent
         width: parent.width - 2
         height: parent.height - 2
         border {
-            width: props.borderMargin
+            width: playerImageBorderWidth
             color: playerColor
         }
 
         Image {
             anchors.centerIn: parent
-            source: picture
+            source: playerImage
             sourceSize {
-                width: parent.width - props.borderMargin
-                height: parent.height - props.borderMargin
+                width: parent.width - playerImageBorderWidth
+                height: parent.height - playerImageBorderWidth
             }
             MouseArea {
                 anchors.fill: parent
