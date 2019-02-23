@@ -14,6 +14,7 @@ public:
         None,
         Red,
         Blue,
+        TeamCount,
     };
 
     Q_ENUM(TeamId)
@@ -35,6 +36,9 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
+public slots:
+    void changeTeam(QString player_id);
+
 private slots:
     void updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players);
 
@@ -47,6 +51,8 @@ private:
     };
 
     QList<Player> players;
+
+    int searchPlayer(QString player_id) const;
 };
 
 #endif // PLAYERSMODEL_H
