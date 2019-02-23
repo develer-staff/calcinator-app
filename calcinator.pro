@@ -20,7 +20,8 @@ ios {
 
 SOURCES += \
         main.cpp \
-    playersmodel.cpp
+    playersmodel.cpp \
+    servercommunicator.cpp
 
 RESOURCES += qml.qrc
 
@@ -36,4 +37,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    playersmodel.h
+    playersmodel.h \
+    servercommunicator.h

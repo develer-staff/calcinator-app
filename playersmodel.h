@@ -2,9 +2,8 @@
 #define PLAYERSMODEL_H
 
 #include <QAbstractListModel>
-#include <QList>
 
-class QNetworkReply;
+#include "servercommunicator.h"
 
 class PlayersModel : public QAbstractListModel {
     Q_OBJECT
@@ -36,7 +35,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
 private slots:
-    void handleReply(QNetworkReply *reply);
+    void updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players);
 
 private:
     struct Player {

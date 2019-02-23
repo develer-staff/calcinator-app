@@ -2,21 +2,11 @@
 
 #include <QDebug>
 
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QUrl>
-
 PlayersModel::PlayersModel(QObject *parent) : QAbstractListModel(parent) {
-    auto network = new QNetworkAccessManager(this);
+    auto server_communicator_instance = ServerCommunicator::instance();
+    connect(server_communicator_instance, &ServerCommunicator::playersUpdated, this, &PlayersModel::updatePlayers);
 
-    connect(network, &QNetworkAccessManager::finished, this, &PlayersModel::handleReply);
-
-    auto request = QNetworkRequest(QUrl("http://private-6fb29a-calcinator.apiary-mock.com/players"));
-    network->get(request);
+    ServerCommunicator::instance()->getPlayers();
 }
 
 int PlayersModel::rowCount(const QModelIndex &parent) const {
@@ -50,20 +40,12 @@ QHash<int, QByteArray> PlayersModel::roleNames() const {
             {PlayerRoles::Team, "team"}};
 }
 
-void PlayersModel::handleReply(QNetworkReply *reply) {
+void PlayersModel::updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players) {
+
     emit beginResetModel();
 
-    auto r = QString(reply->readAll());
-
-    auto json = QJsonDocument::fromJson(r.toUtf8());
-    qDebug() << json;
-
-    auto json_array = json.array();
-    for (auto player_data : json_array) {
-        auto player_object = player_data.toObject();
-
-        players.append({player_object["id"].toString(), player_object["name"].toString(),
-                        player_object["picture"].toString(), TeamId::None});
+    for (auto player : players) {
+        this->players.append({player.id, player.name, player.picture_url, TeamId::None});
     }
     emit endResetModel();
 }
