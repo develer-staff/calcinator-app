@@ -23,7 +23,13 @@ GridView {
     delegate: PlayerSelectionButton {
         width: root.cellWidth - props.imageMargin
         height: root.cellHeight - props.imageMargin
-        playerColor: "transparent"
+        playerColor: {
+            if (team === PlayersModel.None)
+                return "transparent"
+            else if (team === PlayersModel.Red)
+                return "red"
+            return "blue"
+        }
 
         playerImage: picture
         playerImageBorderWidth: props.borderMargin

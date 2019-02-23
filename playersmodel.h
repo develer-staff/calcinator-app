@@ -9,17 +9,20 @@ class QNetworkReply;
 class PlayersModel : public QAbstractListModel {
     Q_OBJECT
 
-    struct Player {
-        QString id;
-        QString name;
-        QString picture;
+public:
+    enum TeamId {
+        None,
+        Red,
+        Blue,
     };
 
-public:
+    Q_ENUM(TeamId)
+
     enum PlayerRoles {
         Id = Qt::UserRole + 1,
         Name,
         Picture,
+        Team,
     };
 
     Q_ENUM(PlayerRoles)
@@ -36,6 +39,13 @@ private slots:
     void handleReply(QNetworkReply *reply);
 
 private:
+    struct Player {
+        QString id;
+        QString name;
+        QString picture;
+        TeamId team_id;
+    };
+
     QList<Player> players;
 };
 

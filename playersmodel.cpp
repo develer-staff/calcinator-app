@@ -36,6 +36,8 @@ QVariant PlayersModel::data(const QModelIndex &index, int role) const {
         return player.name;
     case PlayerRoles::Picture:
         return player.picture;
+    case PlayerRoles::Team:
+        return player.team_id;
     }
 
     return QVariant();
@@ -44,7 +46,8 @@ QVariant PlayersModel::data(const QModelIndex &index, int role) const {
 QHash<int, QByteArray> PlayersModel::roleNames() const {
     return {{PlayerRoles::Id, "id"},
             {PlayerRoles::Name, "name"},
-            {PlayerRoles::Picture, "picture"}};
+            {PlayerRoles::Picture, "picture"},
+            {PlayerRoles::Team, "team"}};
 }
 
 void PlayersModel::handleReply(QNetworkReply *reply) {
@@ -59,9 +62,8 @@ void PlayersModel::handleReply(QNetworkReply *reply) {
     for (auto player_data : json_array) {
         auto player_object = player_data.toObject();
 
-        players.append({player_object["id"].toString(),
-                        player_object["name"].toString(),
-                        player_object["picture"].toString()});
+        players.append({player_object["id"].toString(), player_object["name"].toString(),
+                        player_object["picture"].toString(), TeamId::None});
     }
     emit endResetModel();
 }
