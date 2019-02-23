@@ -2,13 +2,11 @@
 #define PLAYERSMODEL_H
 
 #include <QAbstractListModel>
-
 #include <QList>
 
 class QNetworkReply;
 
-class PlayersModel: public QAbstractListModel
-{
+class PlayersModel : public QAbstractListModel {
     Q_OBJECT
 
     struct Player {
@@ -26,9 +24,9 @@ public:
 
     Q_ENUM(PlayerRoles)
 
-    explicit PlayersModel(QObject *parent=nullptr);
+    explicit PlayersModel(QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex &parent=QModelIndex()) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
