@@ -13,11 +13,9 @@
 PlayersModel::PlayersModel(QObject *parent) : QAbstractListModel(parent) {
     auto network = new QNetworkAccessManager(this);
 
-    connect(network, &QNetworkAccessManager::finished, this,
-            &PlayersModel::handleReply);
+    connect(network, &QNetworkAccessManager::finished, this, &PlayersModel::handleReply);
 
-    auto request = QNetworkRequest(
-        QUrl("http://private-6fb29a-calcinator.apiary-mock.com/players"));
+    auto request = QNetworkRequest(QUrl("http://private-6fb29a-calcinator.apiary-mock.com/players"));
     network->get(request);
 }
 
