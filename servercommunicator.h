@@ -15,7 +15,7 @@ public:
         QString picture_url;
     };
 
-    static ServerCommunicator *instance(QObject *parent = nullptr);
+    static ServerCommunicator &instance();
 
     void getPlayers();
 
@@ -26,8 +26,6 @@ private:
     explicit ServerCommunicator(QObject *parent = nullptr);
 
     void handleReply(QNetworkReply *reply);
-
-    static ServerCommunicator *server_communicator_instance;
 };
 
 #endif // SERVERCOMMUNICATOR_H

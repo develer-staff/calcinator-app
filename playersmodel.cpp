@@ -3,10 +3,10 @@
 #include <QDebug>
 
 PlayersModel::PlayersModel(QObject *parent) : QAbstractListModel(parent) {
-    auto server_communicator_instance = ServerCommunicator::instance();
-    connect(server_communicator_instance, &ServerCommunicator::playersUpdated, this, &PlayersModel::updatePlayers);
+    auto &server_communicator_instance = ServerCommunicator::instance();
+    connect(&server_communicator_instance, &ServerCommunicator::playersUpdated, this, &PlayersModel::updatePlayers);
 
-    ServerCommunicator::instance()->getPlayers();
+    ServerCommunicator::instance().getPlayers();
 }
 
 int PlayersModel::rowCount(const QModelIndex &parent) const {

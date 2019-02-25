@@ -7,16 +7,12 @@
 #include <QNetworkRequest>
 #include <QUrl>
 
-ServerCommunicator *ServerCommunicator::server_communicator_instance = nullptr;
-
 ServerCommunicator::ServerCommunicator(QObject *parent) : QNetworkAccessManager(parent) {
     connect(this, &ServerCommunicator::finished, this, &ServerCommunicator::handleReply);
 }
 
-ServerCommunicator *ServerCommunicator::instance(QObject *parent) {
-    if (server_communicator_instance == nullptr)
-        server_communicator_instance = new ServerCommunicator(parent);
-
+ServerCommunicator &ServerCommunicator::instance() {
+    static ServerCommunicator server_communicator_instance;
     return server_communicator_instance;
 }
 
