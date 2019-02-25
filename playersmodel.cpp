@@ -2,20 +2,24 @@
 
 #include <QDebug>
 
-PlayersModel::PlayersModel(QObject *parent) : QAbstractListModel(parent) {
+PlayersModel::PlayersModel(QObject *parent)
+    : QAbstractListModel(parent)
+{
     auto &server_communicator_instance = ServerCommunicator::instance();
     connect(&server_communicator_instance, &ServerCommunicator::playersUpdated, this, &PlayersModel::updatePlayers);
 
     ServerCommunicator::instance().getPlayers();
 }
 
-int PlayersModel::rowCount(const QModelIndex &parent) const {
+int PlayersModel::rowCount(const QModelIndex &parent) const
+{
     Q_UNUSED(parent)
 
     return players.count();
 }
 
-QVariant PlayersModel::data(const QModelIndex &index, int role) const {
+QVariant PlayersModel::data(const QModelIndex &index, int role) const
+{
 
     const auto &player = players[index.row()];
 
@@ -33,19 +37,21 @@ QVariant PlayersModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
-QHash<int, QByteArray> PlayersModel::roleNames() const {
-    return {{PlayerRoles::Id, "id"},
-            {PlayerRoles::Name, "name"},
-            {PlayerRoles::Picture, "picture"},
-            {PlayerRoles::Team, "team"}};
+QHash<int, QByteArray> PlayersModel::roleNames() const
+{
+    return { { PlayerRoles::Id, "id" },
+             { PlayerRoles::Name, "name" },
+             { PlayerRoles::Picture, "picture" },
+             { PlayerRoles::Team, "team" } };
 }
 
-void PlayersModel::updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players) {
+void PlayersModel::updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players)
+{
 
     emit beginResetModel();
 
     for (auto player : players) {
-        this->players.append({player.id, player.name, player.picture_url, TeamId::None});
+        this->players.append({ player.id, player.name, player.picture_url, TeamId::None });
     }
     emit endResetModel();
 }

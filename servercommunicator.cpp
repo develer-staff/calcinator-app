@@ -7,21 +7,26 @@
 #include <QNetworkRequest>
 #include <QUrl>
 
-ServerCommunicator::ServerCommunicator(QObject *parent) : QNetworkAccessManager(parent) {
+ServerCommunicator::ServerCommunicator(QObject *parent)
+    : QNetworkAccessManager(parent)
+{
     connect(this, &ServerCommunicator::finished, this, &ServerCommunicator::handleReply);
 }
 
-ServerCommunicator &ServerCommunicator::instance() {
+ServerCommunicator &ServerCommunicator::instance()
+{
     static ServerCommunicator server_communicator_instance;
     return server_communicator_instance;
 }
 
-void ServerCommunicator::getPlayers() {
+void ServerCommunicator::getPlayers()
+{
     auto request = QNetworkRequest(QUrl("http://private-6fb29a-calcinator.apiary-mock.com/players"));
     get(request);
 }
 
-void ServerCommunicator::handleReply(QNetworkReply *reply) {
+void ServerCommunicator::handleReply(QNetworkReply *reply)
+{
     QList<PlayerInfo> players;
 
     auto r = QString(reply->readAll());
@@ -33,8 +38,8 @@ void ServerCommunicator::handleReply(QNetworkReply *reply) {
     for (auto player_data : json_array) {
         auto player_object = player_data.toObject();
 
-        players.append(
-            {player_object["id"].toString(), player_object["name"].toString(), player_object["picture"].toString()});
+        players.append({ player_object["id"].toString(), player_object["name"].toString(),
+                         player_object["picture"].toString() });
     }
 
     emit playersUpdated(players);

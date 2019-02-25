@@ -5,7 +5,8 @@
 
 class QNetworkReply;
 
-class ServerCommunicator : public QNetworkAccessManager {
+class ServerCommunicator : public QNetworkAccessManager
+{
     Q_OBJECT
 
 public:

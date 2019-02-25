@@ -5,7 +5,8 @@
 
 #include "servercommunicator.h"
 
-class PlayersModel : public QAbstractListModel {
+class PlayersModel : public QAbstractListModel
+{
     Q_OBJECT
 
 public:
