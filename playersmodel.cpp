@@ -21,6 +21,9 @@ int PlayersModel::rowCount(const QModelIndex &parent) const
 QVariant PlayersModel::data(const QModelIndex &index, int role) const
 {
 
+    if (!index.isValid() || index.row() >= players.count())
+        return QVariant();
+
     const auto &player = players[index.row()];
 
     switch (PlayerRoles(role)) {
