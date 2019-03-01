@@ -18,6 +18,7 @@ GridView {
     cellWidth: width/4
 
     model: PlayersModel {
+        id: playersModel
     }
 
     delegate: PlayerSelectionButton {
@@ -33,5 +34,7 @@ GridView {
 
         playerImage: picture
         playerImageBorderWidth: props.borderMargin
+
+        onChangeTeam: playersModel.changeTeam(id)
     }
 }
