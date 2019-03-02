@@ -2,6 +2,8 @@
 
 #include <QDebug>
 
+#define MAX_PLAYERS_PER_TEAM 2
+
 PlayersModel::PlayersModel(QObject *parent)
     : QAbstractListModel(parent)
 {
@@ -54,7 +56,11 @@ void PlayersModel::changeTeam(QString player_id)
     if (i == -1)
         return;
 
-    players[i].team_id = TeamId((players[i].team_id + 1) % TeamCount);
+    auto next_team = calculateNextTeam(players[i].team_id);
+    if (next_team == players[i].team_id)
+        return;
+
+    players[i].team_id = next_team;
 
     auto idx = index(i, 0);
     emit dataChanged(idx, idx, { PlayerRoles::Team });
@@ -79,4 +85,30 @@ int PlayersModel::searchPlayer(QString player_id) const
     }
 
     return -1;
+}
+
+int PlayersModel::playersPerTeam(PlayersModel::TeamId team_id) const
+{
+    auto count = 0;
+    for (const auto &player : players) {
+        if (player.team_id == team_id)
+            ++count;
+    }
+
+    return count;
+}
+
+PlayersModel::TeamId PlayersModel::calculateNextTeam(PlayersModel::TeamId team_id) const
+{
+    auto next_team = nextTeam(team_id);
+    while (next_team != TeamId::None && playersPerTeam(next_team) == MAX_PLAYERS_PER_TEAM) {
+        next_team = nextTeam(next_team);
+    }
+
+    return next_team;
+}
+
+PlayersModel::TeamId PlayersModel::nextTeam(PlayersModel::TeamId team_id) const
+{
+    return TeamId((team_id + 1) % TeamCount);
 }

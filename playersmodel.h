@@ -53,6 +53,10 @@ private:
     QList<Player> players;
 
     int searchPlayer(QString player_id) const;
+
+    int playersPerTeam(TeamId team_id) const;
+    TeamId calculateNextTeam(TeamId team_id) const;
+    TeamId nextTeam(TeamId team_id) const;
 };
 
 #endif // PLAYERSMODEL_H
