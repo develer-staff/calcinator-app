@@ -35,3 +35,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     playersmodel.h \
     servercommunicator.h
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+        $$PWD/artifacts/android/libcrypto.so \
+        $$PWD/artifacts/android/libssl.so
+}
