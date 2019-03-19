@@ -28,6 +28,8 @@ public:
 
     Q_ENUM(PlayerRoles)
 
+    Q_PROPERTY(bool updating READ getUpdating NOTIFY updatingChanged)
+
     explicit PlayersModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -36,8 +38,14 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
+    bool getUpdating() const;
+
+signals:
+    void updatingChanged();
+
 public slots:
     void changeTeam(QString player_id);
+    void update();
 
 private slots:
     void updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players);
@@ -51,7 +59,9 @@ private:
     };
 
     QList<Player> players;
+    bool updating;
 
+    void setUpdating(bool uptading);
     int searchPlayer(QString player_id) const;
 
     int playersPerTeam(TeamId team_id) const;

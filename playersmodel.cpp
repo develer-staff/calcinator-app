@@ -10,7 +10,7 @@ PlayersModel::PlayersModel(QObject *parent)
     auto &server_communicator_instance = ServerCommunicator::instance();
     connect(&server_communicator_instance, &ServerCommunicator::playersUpdated, this, &PlayersModel::updatePlayers);
 
-    ServerCommunicator::instance().getPlayers();
+    update();
 }
 
 int PlayersModel::rowCount(const QModelIndex &parent) const
@@ -50,6 +50,11 @@ QHash<int, QByteArray> PlayersModel::roleNames() const
              { PlayerRoles::Team, "team" } };
 }
 
+bool PlayersModel::getUpdating() const
+{
+    return updating;
+}
+
 void PlayersModel::changeTeam(QString player_id)
 {
     auto i = searchPlayer(player_id);
@@ -66,15 +71,34 @@ void PlayersModel::changeTeam(QString player_id)
     emit dataChanged(idx, idx, { PlayerRoles::Team });
 }
 
+void PlayersModel::update()
+{
+    setUpdating(true);
+    ServerCommunicator::instance().getPlayers();
+}
+
 void PlayersModel::updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players)
 {
 
     emit beginResetModel();
 
+    this->players.clear();
+
     for (auto player : players) {
         this->players.append({ player.id, player.name, player.picture_url, TeamId::None });
     }
+
     emit endResetModel();
+    setUpdating(false);
+}
+
+void PlayersModel::setUpdating(bool uptading)
+{
+    if (this->updating == uptading)
+        return;
+
+    this->updating = uptading;
+    emit updatingChanged();
 }
 
 int PlayersModel::searchPlayer(QString player_id) const
