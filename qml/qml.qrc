@@ -12,5 +12,6 @@
         <file>Pages/NewMatch.qml</file>
         <file>Pages/MainPage.qml</file>
         <file>Components/Header.qml</file>
+        <file>icons/logo.png</file>
     </qresource>
 </RCC>

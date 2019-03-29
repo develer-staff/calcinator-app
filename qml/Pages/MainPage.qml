@@ -11,34 +11,53 @@ Page {
 
     contentItem: ColumnLayout {
         spacing: 0
+        width: parent.width
+
+        Image {
+            id: logo
+            Layout.alignment: Qt.AlignHCenter
+            source: "qrc:/icons/logo"
+        }
 
         MenuItem {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            width: 300
+            height: 80
+
+            Layout.alignment: Qt.AlignHCenter
+
+            radius: 30
 
             txt: qsTr("Nuova partita")
             src: "qrc:/icons/play-button"
-            buttonColor: "red"
+            buttonColor: "#03A9F4"
 
             onSelected: root.newMatch()
         }
 
         MenuItem {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            width: 300
+            height: 80
+
+            Layout.alignment: Qt.AlignHCenter
+
+            radius: 30
 
             txt: qsTr("Stats")
             src: "qrc:/icons/statistics"
-            buttonColor: "yellow"
+            buttonColor: "#03A9F4"
         }
 
         MenuItem {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            width: 300
+            height: 80
+
+            Layout.alignment: Qt.AlignHCenter
+
+            radius: 30
 
             txt: qsTr("Nuovo giocatore")
             src: "qrc:/icons/new-user"
-            buttonColor: "green"
+            buttonColor: "#03A9F4"
         }
     }
 }
