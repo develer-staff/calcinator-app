@@ -5,6 +5,7 @@ Item {
 
     property alias title: headerTitle.text
     property bool backButtonVisible
+    property alias rightButton: rightButton.sourceComponent
 
     signal backButtonPressed()
 
@@ -34,5 +35,16 @@ Item {
     Text {
         id: headerTitle
         anchors.centerIn: parent
+    }
+
+    Loader {
+        id: rightButton
+
+        anchors {
+            right: parent.right
+            rightMargin: 10
+            top: parent.top
+            bottom: parent.bottom
+        }
     }
 }

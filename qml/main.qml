@@ -16,6 +16,7 @@ ApplicationWindow {
         backButtonVisible: mainStackView.depth > 1
         onBackButtonPressed: mainStackView.pop()
         title: mainStackView.currentItem.title
+        rightButton: mainStackView.currentItem.rightButton
     }
 
     StackView {
@@ -29,6 +30,8 @@ ApplicationWindow {
         id: newMatchPage
         NewMatch {
             property string title: qsTr("New match")
+
+            onNewMatchReady: console.log("Ready to start")
         }
     }
 

@@ -29,6 +29,7 @@ public:
     Q_ENUM(PlayerRoles)
 
     Q_PROPERTY(bool updating READ getUpdating NOTIFY updatingChanged)
+    Q_PROPERTY(bool teamsSelectionReady READ getTeamsSelectionReady NOTIFY teamsSelectionReadyChanged)
 
     explicit PlayersModel(QObject *parent = nullptr);
 
@@ -39,9 +40,11 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     bool getUpdating() const;
+    bool getTeamsSelectionReady() const;
 
 signals:
     void updatingChanged();
+    void teamsSelectionReadyChanged();
 
 public slots:
     void changeTeam(QString player_id);
@@ -60,6 +63,7 @@ private:
 
     QList<Player> players;
     bool updating;
+    bool teams_selection_ready;
 
     void setUpdating(bool uptading);
     int searchPlayer(QString player_id) const;
@@ -67,6 +71,7 @@ private:
     int playersPerTeam(TeamId team_id) const;
     TeamId calculateNextTeam(TeamId team_id) const;
     TeamId nextTeam(TeamId team_id) const;
+    void updateTeamsSelectionReady();
 };
 
 #endif // PLAYERSMODEL_H

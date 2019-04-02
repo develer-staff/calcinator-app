@@ -6,6 +6,8 @@
 
 PlayersModel::PlayersModel(QObject *parent)
     : QAbstractListModel(parent)
+    , updating(false)
+    , teams_selection_ready(false)
 {
     auto &server_communicator_instance = ServerCommunicator::instance();
     connect(&server_communicator_instance, &ServerCommunicator::playersUpdated, this, &PlayersModel::updatePlayers);
@@ -55,6 +57,11 @@ bool PlayersModel::getUpdating() const
     return updating;
 }
 
+bool PlayersModel::getTeamsSelectionReady() const
+{
+    return teams_selection_ready;
+}
+
 void PlayersModel::changeTeam(QString player_id)
 {
     auto i = searchPlayer(player_id);
@@ -69,6 +76,8 @@ void PlayersModel::changeTeam(QString player_id)
 
     auto idx = index(i, 0);
     emit dataChanged(idx, idx, { PlayerRoles::Team });
+
+    updateTeamsSelectionReady();
 }
 
 void PlayersModel::update()
@@ -135,4 +144,25 @@ PlayersModel::TeamId PlayersModel::calculateNextTeam(PlayersModel::TeamId team_i
 PlayersModel::TeamId PlayersModel::nextTeam(PlayersModel::TeamId team_id) const
 {
     return TeamId((team_id + 1) % TeamCount);
+}
+
+void PlayersModel::updateTeamsSelectionReady()
+{
+    auto red_team_members = 0;
+    auto blue_team_members = 0;
+
+    for (const auto &player : players) {
+        if (player.team_id == Blue)
+            blue_team_members++;
+        else if (player.team_id == Red)
+            red_team_members++;
+    }
+
+    auto selection_ready = red_team_members == MAX_PLAYERS_PER_TEAM && blue_team_members == MAX_PLAYERS_PER_TEAM;
+
+    if (selection_ready == teams_selection_ready)
+        return;
+
+    teams_selection_ready = selection_ready;
+    emit teamsSelectionReadyChanged();
 }

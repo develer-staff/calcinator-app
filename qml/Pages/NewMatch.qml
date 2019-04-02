@@ -8,6 +8,10 @@ import players 1.0
 GridView {
     id: root
 
+    signal newMatchReady()
+
+    readonly property Component rightButton: rightButtonComponent
+
     clip: true
     interactive: !playersModel.updating
 
@@ -23,20 +27,6 @@ GridView {
         } else if (!draggingVertically && contentY > -90) {
             updateTimer.stop()
         }
-    }
-
-    QtObject {
-        id: props
-        property int borderMargin: 10
-        property int imageMargin: 8
-    }
-
-    Timer {
-        id: updateTimer
-        interval: 500
-        running: false
-
-        onTriggered: playersModel.update()
     }
 
     header: Item {
@@ -79,4 +69,29 @@ GridView {
 
         onChangeTeam: playersModel.changeTeam(id)
     }
+
+    Component {
+        id: rightButtonComponent
+        Button {
+            text: qsTr("Ok")
+            enabled: playersModel.teamsSelectionReady
+            background: Item {}
+            onClicked: newMatchReady()
+        }
+    }
+
+    QtObject {
+        id: props
+        property int borderMargin: 10
+        property int imageMargin: 8
+    }
+
+    Timer {
+        id: updateTimer
+        interval: 500
+        running: false
+
+        onTriggered: playersModel.update()
+    }
+
 }
