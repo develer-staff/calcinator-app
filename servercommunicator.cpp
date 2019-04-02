@@ -29,9 +29,7 @@ void ServerCommunicator::handleReply(QNetworkReply *reply)
 {
     QList<PlayerInfo> players;
 
-    auto r = QString(reply->readAll());
-
-    auto json = QJsonDocument::fromJson(r.toUtf8());
+    auto json = QJsonDocument::fromJson(reply->readAll());
     qDebug() << json;
 
     auto json_array = json.array();
