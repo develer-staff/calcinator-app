@@ -38,7 +38,7 @@ ApplicationWindow {
     Component {
         id: mainPage
         MainPage {
-            title: qsTr("Main Page")
+            property string title: qsTr("Main Page")
 
             onNewMatch: mainStackView.push(newMatchPage)
         }
