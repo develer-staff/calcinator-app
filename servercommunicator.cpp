@@ -13,9 +13,11 @@ ServerCommunicator::ServerCommunicator(QObject *parent)
     connect(this, &ServerCommunicator::finished, this, &ServerCommunicator::handleReply);
 }
 
-ServerCommunicator &ServerCommunicator::instance()
+ServerCommunicator &ServerCommunicator::instance(QObject *parent)
 {
+    Q_UNUSED(parent)
     static ServerCommunicator server_communicator_instance;
+    //    static auto server_communicator = new ServerCommunicator(parent);
     return server_communicator_instance;
 }
 
