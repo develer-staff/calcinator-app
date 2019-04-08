@@ -15,7 +15,7 @@ ApplicationWindow {
     header: Header {
         backButtonVisible: mainStackView.depth > 1
         onBackButtonPressed: mainStackView.pop()
-        title: mainStackView.currentItem.title
+        title: mainStackView.currentItem.title || ""
         rightButton: mainStackView.currentItem.rightButton
     }
 
@@ -31,7 +31,7 @@ ApplicationWindow {
         NewMatch {
             property string title: qsTr("New match")
 
-            onNewMatchReady: console.log("Ready to start")
+            onNewMatchReady: mainStackView.push(matchScorePage)
         }
     }
 
@@ -49,6 +49,13 @@ ApplicationWindow {
 
             onNewMatch: mainStackView.push(newMatchPage)
             onStatistics: mainStackView.push(statisticsPage)
+        }
+    }
+
+    Component {
+        id: matchScorePage
+        MatchScorePage {
+
         }
     }
 }

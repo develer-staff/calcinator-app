@@ -1,4 +1,5 @@
 module Pages
 MainPage 1.0 MainPage.qml
+MatchScorePage 1.0 MatchScorePage.qml
 NewMatch 1.0 NewMatch.qml
 Statistics 1.0 Statistics.qml
