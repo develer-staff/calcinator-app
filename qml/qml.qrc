@@ -18,5 +18,6 @@
         <file>icons/won.svg</file>
         <file>icons/lost.svg</file>
         <file>icons/honor.svg</file>
+        <file>Pages/MatchScorePage.qml</file>
     </qresource>
 </RCC>
