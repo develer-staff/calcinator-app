@@ -36,11 +36,19 @@ ApplicationWindow {
     }
 
     Component {
+        id: statisticsPage
+        Statistics {
+            property string title: qsTr("Statistics")
+        }
+    }
+
+    Component {
         id: mainPage
         MainPage {
             property string title: qsTr("Main Page")
 
             onNewMatch: mainStackView.push(newMatchPage)
+            onStatistics: mainStackView.push(statisticsPage)
         }
     }
 }

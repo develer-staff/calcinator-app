@@ -7,6 +7,7 @@ Column {
     id: root
 
     signal newMatch()
+    signal statistics()
 
     spacing: 15
 
@@ -41,6 +42,8 @@ Column {
         txt: qsTr("Stats")
         src: "qrc:/icons/statistics"
         buttonColor: "#03A9F4"
+
+        onSelected: root.statistics()
     }
 
     MenuItem {
