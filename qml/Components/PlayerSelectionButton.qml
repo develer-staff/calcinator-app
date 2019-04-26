@@ -12,37 +12,80 @@ Item {
     property int playerImageBorderWidth
 
     Rectangle {
+        id: teamRect
         anchors.centerIn: parent
         width: parent.width - 2
         height: parent.height - 2
         border {
             width: playerImageBorderWidth
             color: playerColor
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 200
+                }
+            }
         }
 
-        Image {
+        Column {
+            id: imageNameCol
             anchors.centerIn: parent
-            source: playerImage
-            sourceSize {
-                width: parent.width - playerImageBorderWidth
-                height: parent.height - playerImageBorderWidth
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: root.changeTeam()
-            }
+            spacing: 5
 
-            BusyIndicator {
-                anchors.centerIn: parent
-                running: parent.status === Image.Loading
+            Image {
+                id: playerImg
+                source: playerImage
+                sourceSize {
+                    width: teamRect.width - playerImageBorderWidth
+                    height: teamRect.height - playerImageBorderWidth
+                }
             }
 
             Text {
-                anchors.centerIn: parent
-                text: root.playerName
-                visible: parent.status === Image.Ready
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: playerImg.status === Image.Ready ? root.playerName : ""
             }
         }
+
+        BusyIndicator {
+            anchors.centerIn: imageNameCol
+            running: playerImg.status === Image.Loading
+        }
+
+        MouseArea {
+            anchors.fill: imageNameCol
+            onClicked: root.changeTeam()
+        }
     }
+
+    states:
+        State {
+            id: imageReady
+            when: playerImg.status == Image.Ready
+        }
+
+    transitions:
+        Transition {
+            SequentialAnimation {
+                PropertyAnimation {
+                    duration: 0
+                    target: imageNameCol
+                    property: "opacity"
+                    to: 0
+                }
+
+                PauseAnimation {
+                    duration: 500
+                }
+
+                PropertyAnimation {
+                    duration: 300
+                    target: imageNameCol
+                    property: "opacity"
+                    to: 1
+                }
+            }
+        }
+
 
 }

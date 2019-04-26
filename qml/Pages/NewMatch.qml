@@ -66,6 +66,7 @@ GridView {
 
         playerImage: picture
         playerImageBorderWidth: props.borderMargin
+        playerName: name
 
         onChangeTeam: playersModel.changeTeam(id)
     }
