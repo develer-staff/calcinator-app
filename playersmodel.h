@@ -24,6 +24,9 @@ public:
         Name,
         Picture,
         Team,
+        Won,
+        Lost,
+        HonorLost,
     };
 
     Q_ENUM(PlayerRoles)
@@ -54,11 +57,18 @@ private slots:
     void updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players);
 
 private:
+    struct Stats {
+        int won;
+        int lost;
+        int honorLost;
+    };
+
     struct Player {
         QString id;
         QString name;
         QString picture;
         TeamId team_id;
+        Stats stats;
     };
 
     QList<Player> players;

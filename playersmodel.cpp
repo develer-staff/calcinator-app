@@ -39,6 +39,12 @@ QVariant PlayersModel::data(const QModelIndex &index, int role) const
         return player.picture;
     case PlayerRoles::Team:
         return player.team_id;
+    case PlayerRoles::Won:
+        return player.stats.won;
+    case PlayerRoles::Lost:
+        return player.stats.lost;
+    case PlayerRoles::HonorLost:
+        return player.stats.honorLost;
     }
 
     return QVariant();
@@ -49,7 +55,10 @@ QHash<int, QByteArray> PlayersModel::roleNames() const
     return { { PlayerRoles::Id, "id" },
              { PlayerRoles::Name, "name" },
              { PlayerRoles::Picture, "picture" },
-             { PlayerRoles::Team, "team" } };
+             { PlayerRoles::Team, "team" },
+             { PlayerRoles::Won, "won" },
+             { PlayerRoles::Lost, "lost" },
+             { PlayerRoles::HonorLost, "honorLost" } };
 }
 
 bool PlayersModel::getUpdating() const
@@ -94,7 +103,11 @@ void PlayersModel::updatePlayers(const QList<ServerCommunicator::PlayerInfo> &pl
     this->players.clear();
 
     for (auto player : players) {
-        this->players.append({ player.id, player.name, player.picture_url, TeamId::None });
+        this->players.append({ player.id,
+                               player.name,
+                               player.picture_url,
+                               TeamId::None,
+                               { player.stats.won, player.stats.lost, player.stats.honorLost } });
     }
 
     emit endResetModel();

@@ -35,9 +35,12 @@ void ServerCommunicator::handleReply(QNetworkReply *reply)
     auto json_array = json.array();
     for (auto player_data : json_array) {
         auto player_object = player_data.toObject();
+        auto player_stats = player_object["stats"].toObject();
+
+        Stats stats { player_stats["won"].toInt(), player_stats["lost"].toInt(), player_stats["honorLost"].toInt() };
 
         players.append({ player_object["id"].toString(), player_object["name"].toString(),
-                         player_object["picture"].toString() });
+                         player_object["picture"].toString(), stats });
     }
 
     emit playersUpdated(players);

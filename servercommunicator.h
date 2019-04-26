@@ -10,10 +10,17 @@ class ServerCommunicator : public QNetworkAccessManager
     Q_OBJECT
 
 public:
+    struct Stats {
+        int won;
+        int lost;
+        int honorLost;
+    };
+
     struct PlayerInfo {
         QString id;
         QString name;
         QString picture_url;
+        Stats stats;
     };
 
     static ServerCommunicator &instance();
