@@ -1,105 +1,80 @@
 import QtQuick 2.0
-import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.5
+
+import Components 1.0
 
 import players 1.0
 
-Item {
-    id: root
+ListView {
+    spacing: 5
 
-    ListView {
-        anchors.fill: parent
-        model: PlayersModel{}
+    model: PlayersModel{}
 
-        delegate: Item {
-            anchors {
-                left: parent.left
-                right: parent.right
+    delegate: Item {
+        anchors {
+            left: parent.left
+            right: parent.right
 
-                margins: 10
-            }
+            margins: 10
+        }
 
-            height: 100
+        height: 100
 
-            RowLayout {
-                spacing: 15
+        Row {
+            anchors.verticalCenter: parent.verticalCenter
+
+            spacing: 15
+
+            Item {
+
+                width: 80
+                height: width
 
                 Image {
                     id: playerImage
+                    anchors.centerIn: parent
+
                     source: picture
+                    sourceSize {
+                        width: parent.width - 6
+                        height: parent.height - 6
+                    }
+
                 }
-
-                Text {
-                    id: playerName
-
-                    text: name
-                    font.pixelSize: 16
+                BusyIndicator {
+                    anchors.fill: parent
+                    running: playerImage.status === Image.Loading
                 }
+            }
 
-                Column {
-                    spacing: 2
+            Text {
+                id: playerName
 
-                    Image {
-                        id: honorIcon
-                        anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
 
-                        width: 20
-                        height: width
+                text: name
+                font.pixelSize: 16
+            }
 
-                        source: "qrc:/icons/honor"
-                    }
+            StatInfo {
+                anchors.verticalCenter: parent.verticalCenter
 
-                    Text {
-                        id: honorLost
-                        anchors.horizontalCenter: parent.horizontalCenter
+                imgSource: "qrc:/icons/honor"
+                text: honorLost
+            }
 
-                        text: "4"
-                        font.pixelSize: 16
-                    }
-                }
+            StatInfo {
+                anchors.verticalCenter: parent.verticalCenter
 
-                Column {
-                    spacing: 2
+                imgSource: "qrc:/icons/won"
+                text: won
+            }
 
-                    Image {
-                        id: wonIcon
-                        anchors.horizontalCenter: parent.horizontalCenter
+            StatInfo {
+                anchors.verticalCenter: parent.verticalCenter
 
-                        width: 20
-                        height: width
-
-                        source: "qrc:/icons/won"
-                    }
-
-                    Text {
-                        id: wonText
-                        anchors.horizontalCenter: parent.horizontalCenter
-
-                        text: "15"
-                        font.pixelSize: 16
-                    }
-                }
-
-                Column {
-                    spacing: 2
-
-                    Image {
-                        id: lostIcon
-                        anchors.horizontalCenter: parent.horizontalCenter
-
-                        width: 20
-                        height: width
-
-                        source: "qrc:/icons/lost"
-                    }
-
-                    Text {
-                        id: lostText
-                        anchors.horizontalCenter: parent.horizontalCenter
-
-                        text: "7"
-                        font.pixelSize: 16
-                    }
-                }
+                imgSource: "qrc:/icons/lost"
+                text: lost
             }
         }
     }
