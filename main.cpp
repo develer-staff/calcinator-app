@@ -9,7 +9,11 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<PlayersModel>("players", 1, 0, "PlayersModel");
+    qmlRegisterSingletonType<PlayersModel>("players", 1, 0, "PlayersModel",
+                                           [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
+                                               Q_UNUSED(scriptEngine)
+                                               return PlayersModel::instance(engine);
+                                           });
 
     QQmlApplicationEngine engine;
     engine.addImportPath("qrc:///");

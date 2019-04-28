@@ -13,7 +13,7 @@ GridView {
     readonly property Component rightButton: rightButtonComponent
 
     clip: true
-    interactive: !playersModel.updating
+    interactive: !PlayersModel.updating
 
     cellHeight: width/4
     cellWidth: width/4
@@ -34,7 +34,7 @@ GridView {
             left: parent.left
             right: parent.right
         }
-        height: playersModel.updating ? 50 : 0
+        height: PlayersModel.updating ? 50 : 0
 
         Behavior on height {
             NumberAnimation {
@@ -49,9 +49,7 @@ GridView {
         }
     }
 
-    model: PlayersModel {
-        id: playersModel
-    }
+    model: PlayersModel
 
     delegate: PlayerSelectionButton {
         width: root.cellWidth - props.imageMargin
@@ -68,14 +66,14 @@ GridView {
         playerImageBorderWidth: props.borderMargin
         playerName: name
 
-        onChangeTeam: playersModel.changeTeam(id)
+        onChangeTeam: PlayersModel.changeTeam(id)
     }
 
     Component {
         id: rightButtonComponent
         Button {
             text: qsTr("Ok")
-            enabled: playersModel.teamsSelectionReady
+            enabled: PlayersModel.teamsSelectionReady
             background: Item {}
             onClicked: newMatchReady()
         }
@@ -92,7 +90,7 @@ GridView {
         interval: 500
         running: false
 
-        onTriggered: playersModel.update()
+        onTriggered: PlayersModel.update()
     }
 
 }

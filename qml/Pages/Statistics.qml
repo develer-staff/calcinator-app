@@ -8,7 +8,7 @@ import players 1.0
 ListView {
     spacing: 5
 
-    model: PlayersModel{}
+    model: PlayersModel
 
     delegate: Item {
         anchors {

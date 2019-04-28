@@ -4,6 +4,12 @@
 
 #define MAX_PLAYERS_PER_TEAM 2
 
+PlayersModel *PlayersModel::instance(QObject *parent)
+{
+    static PlayersModel *players_model_instace = new PlayersModel(parent);
+    return players_model_instace;
+}
+
 PlayersModel::PlayersModel(QObject *parent)
     : QAbstractListModel(parent)
     , updating(false)

@@ -34,7 +34,7 @@ public:
     Q_PROPERTY(bool updating READ getUpdating NOTIFY updatingChanged)
     Q_PROPERTY(bool teamsSelectionReady READ getTeamsSelectionReady NOTIFY teamsSelectionReadyChanged)
 
-    explicit PlayersModel(QObject *parent = nullptr);
+    static PlayersModel *instance(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
@@ -74,6 +74,8 @@ private:
     QList<Player> players;
     bool updating;
     bool teams_selection_ready;
+
+    explicit PlayersModel(QObject *parent = nullptr);
 
     void setUpdating(bool uptading);
     int searchPlayer(QString player_id) const;
