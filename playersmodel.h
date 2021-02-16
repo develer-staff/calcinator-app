@@ -5,6 +5,8 @@
 
 #include "servercommunicator.h"
 
+class QDataStream;
+
 class PlayersModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -31,6 +33,20 @@ public:
 
     Q_ENUM(PlayerRoles)
 
+    struct Stats {
+        int won;
+        int lost;
+        int honorLost;
+    };
+
+    struct Player {
+        QString id;
+        QString name;
+        QString picture;
+        TeamId team_id;
+        Stats stats;
+    };
+
     Q_PROPERTY(bool updating READ getUpdating NOTIFY updatingChanged)
     Q_PROPERTY(bool teamsSelectionReady READ getTeamsSelectionReady NOTIFY teamsSelectionReadyChanged)
 
@@ -51,26 +67,12 @@ signals:
 
 public slots:
     void changeTeam(QString player_id);
-    void update();
+    void update(bool update_from_file = false);
 
 private slots:
     void updatePlayers(const QList<ServerCommunicator::PlayerInfo> &players);
 
 private:
-    struct Stats {
-        int won;
-        int lost;
-        int honorLost;
-    };
-
-    struct Player {
-        QString id;
-        QString name;
-        QString picture;
-        TeamId team_id;
-        Stats stats;
-    };
-
     QList<Player> players;
     bool updating;
     bool teams_selection_ready;
@@ -84,6 +86,8 @@ private:
     TeamId calculateNextTeam(TeamId team_id) const;
     TeamId nextTeam(TeamId team_id) const;
     void updateTeamsSelectionReady();
+    bool loadPlayersListFromFile();
+    void savePlayersListToFile();
 };
 
 #endif // PLAYERSMODEL_H

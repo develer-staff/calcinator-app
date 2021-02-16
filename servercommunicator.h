@@ -23,7 +23,7 @@ public:
         Stats stats;
     };
 
-    static ServerCommunicator &instance();
+    static ServerCommunicator &instance(QObject *parent = nullptr);
 
     void getPlayers();
 

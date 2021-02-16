@@ -1,8 +1,48 @@
 #include "playersmodel.h"
 
+#include <QDataStream>
 #include <QDebug>
+#include <QFileInfo>
+#include <QSaveFile>
+
+#include "imagedownloader.h"
+#include "imageprovider.h"
 
 #define MAX_PLAYERS_PER_TEAM 2
+#define LIST_OF_PLAYERS_FILE "list_of_players"
+
+Q_DECLARE_METATYPE(PlayersModel::Player);
+
+QDataStream &operator<<(QDataStream &stream, const PlayersModel::Stats &stats)
+{
+    stream << stats.won << stats.lost << stats.honorLost;
+    return stream;
+}
+
+QDataStream &operator>>(QDataStream &stream, PlayersModel::Stats &stats)
+{
+    stream >> stats.won;
+    stream >> stats.lost;
+    stream >> stats.honorLost;
+    return stream;
+}
+
+QDataStream &operator<<(QDataStream &stream, const PlayersModel::Player &player)
+{
+    stream << player.id << player.name << player.picture << player.stats;
+    return stream;
+}
+
+QDataStream &operator>>(QDataStream &stream, PlayersModel::Player &player)
+{
+    stream >> player.id;
+    stream >> player.name;
+    stream >> player.picture;
+    stream >> player.stats;
+    player.team_id = PlayersModel::None;
+
+    return stream;
+}
 
 PlayersModel *PlayersModel::instance(QObject *parent)
 {
@@ -15,10 +55,12 @@ PlayersModel::PlayersModel(QObject *parent)
     , updating(false)
     , teams_selection_ready(false)
 {
+    qRegisterMetaTypeStreamOperators<QList<Player>>("Players");
+
     auto &server_communicator_instance = ServerCommunicator::instance();
     connect(&server_communicator_instance, &ServerCommunicator::playersUpdated, this, &PlayersModel::updatePlayers);
 
-    update();
+    update(true);
 }
 
 int PlayersModel::rowCount(const QModelIndex &parent) const
@@ -95,9 +137,11 @@ void PlayersModel::changeTeam(QString player_id)
     updateTeamsSelectionReady();
 }
 
-void PlayersModel::update()
+void PlayersModel::update(bool update_from_file)
 {
-    setUpdating(true);
+    if (update_from_file && loadPlayersListFromFile())
+        return;
+
     ServerCommunicator::instance().getPlayers();
 }
 
@@ -105,6 +149,7 @@ void PlayersModel::updatePlayers(const QList<ServerCommunicator::PlayerInfo> &pl
 {
 
     emit beginResetModel();
+    setUpdating(true);
 
     this->players.clear();
 
@@ -116,8 +161,10 @@ void PlayersModel::updatePlayers(const QList<ServerCommunicator::PlayerInfo> &pl
                                { player.stats.won, player.stats.lost, player.stats.honorLost } });
     }
 
-    emit endResetModel();
+    savePlayersListToFile();
+
     setUpdating(false);
+    emit endResetModel();
 }
 
 void PlayersModel::setUpdating(bool uptading)
@@ -184,4 +231,34 @@ void PlayersModel::updateTeamsSelectionReady()
 
     teams_selection_ready = selection_ready;
     emit teamsSelectionReadyChanged();
+}
+
+bool PlayersModel::loadPlayersListFromFile()
+{
+
+    QFile file(LIST_OF_PLAYERS_FILE);
+    if (!file.open(QSaveFile::ReadOnly))
+        return false;
+
+    setUpdating(true);
+
+    emit beginResetModel();
+    QDataStream stream(&file);
+    stream >> this->players;
+
+    emit endResetModel();
+    setUpdating(false);
+
+    return true;
+}
+
+void PlayersModel::savePlayersListToFile()
+{
+    QSaveFile file(LIST_OF_PLAYERS_FILE);
+    file.open(QSaveFile::WriteOnly);
+    file.fileName();
+    QDataStream stream(&file);
+    stream << this->players;
+
+    file.commit();
 }
